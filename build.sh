@@ -8,3 +8,6 @@ python manage.py migrate --noinput
 python manage.py createsuperuser --noinput || true
 # Optional: set SEED_DEMO=1 once to load demo products, then remove it
 if [ "${SEED_DEMO:-0}" = "1" ]; then python manage.py seed_demo; fi
+if [ "${LOAD_DATA:-0}" = "1" ] && [ -f data.json ]; then
+  python manage.py loaddata data.json
+fi

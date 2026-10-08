@@ -1,0 +1,267 @@
+[
+{
+  "model": "catalog.category",
+  "pk": 1,
+  "fields": {
+    "name": "Dresses",
+    "slug": "dresses",
+    "parent": null,
+    "image": "",
+    "description": "",
+    "is_active": true,
+    "sort_order": 0
+  }
+},
+{
+  "model": "catalog.category",
+  "pk": 2,
+  "fields": {
+    "name": "Tops",
+    "slug": "tops",
+    "parent": null,
+    "image": "",
+    "description": "",
+    "is_active": true,
+    "sort_order": 0
+  }
+},
+{
+  "model": "catalog.category",
+  "pk": 3,
+  "fields": {
+    "name": "Co-ords",
+    "slug": "co-ords",
+    "parent": null,
+    "image": "",
+    "description": "",
+    "is_active": true,
+    "sort_order": 0
+  }
+},
+{
+  "model": "catalog.category",
+  "pk": 4,
+  "fields": {
+    "name": "Outerwear",
+    "slug": "outerwear",
+    "parent": null,
+    "image": "",
+    "description": "",
+    "is_active": true,
+    "sort_order": 0
+  }
+},
+{
+  "model": "catalog.category",
+  "pk": 5,
+  "fields": {
+    "name": "Bottoms",
+    "slug": "bottoms",
+    "parent": null,
+    "image": "",
+    "description": "",
+    "is_active": true,
+    "sort_order": 0
+  }
+},
+{
+  "model": "catalog.drop",
+  "pk": 1,
+  "fields": {
+    "name": "First Drop",
+    "slug": "first-drop",
+    "description": "",
+    "drop_date": null,
+    "is_active": true
+  }
+},
+{
+  "model": "catalog.drop",
+  "pk": 2,
+  "fields": {
+    "name": "Pink Oct Drop",
+    "slug": "pink-oct-drop",
+    "description": "",
+    "drop_date": null,
+    "is_active": true
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 1,
+  "fields": {
+    "category": 1,
+    "drop": 1,
+    "brand_label": "Premium label",
+    "condition": "New with tags",
+    "name": "Floral Wrap Dress",
+    "slug": "floral-wrap-dress",
+    "sku": "NTS-D001",
+    "description": "Floral Wrap Dress – Premium label dress. Limited piece – once it's gone, it's gone.",
+    "fabric": "Premium label dress",
+    "colors": "",
+    "size_run": "",
+    "mrp": "9600.00",
+    "price": "2400.00",
+    "gst_rate": "12.0",
+    "hsn_code": "6109",
+    "stock": 3,
+    "weight_kg": "0.300",
+    "is_active": true,
+    "is_featured": true,
+    "created": "2026-10-07T08:09:42.503Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 2,
+  "fields": {
+    "category": 1,
+    "drop": 1,
+    "brand_label": "Premium label",
+    "condition": "New with tags",
+    "name": "Satin Slip Midi",
+    "slug": "satin-slip-midi",
+    "sku": "NTS-D002",
+    "description": "Satin Slip Midi – Satin. Limited piece – once it's gone, it's gone.",
+    "fabric": "Satin",
+    "colors": "",
+    "size_run": "",
+    "mrp": "7600.00",
+    "price": "1900.00",
+    "gst_rate": "12.0",
+    "hsn_code": "6109",
+    "stock": 2,
+    "weight_kg": "0.300",
+    "is_active": true,
+    "is_featured": true,
+    "created": "2026-10-07T08:09:42.516Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 3,
+  "fields": {
+    "category": 3,
+    "drop": 1,
+    "brand_label": "Premium label",
+    "condition": "New with tags",
+    "name": "Linen Co-ord Set",
+    "slug": "linen-co-ord-set",
+    "sku": "NTS-C001",
+    "description": "Linen Co-ord Set – Linen blend. Limited piece – once it's gone, it's gone.",
+    "fabric": "Linen blend",
+    "colors": "",
+    "size_run": "",
+    "mrp": "8800.00",
+    "price": "2200.00",
+    "gst_rate": "12.0",
+    "hsn_code": "6109",
+    "stock": 0,
+    "weight_kg": "0.300",
+    "is_active": true,
+    "is_featured": true,
+    "created": "2026-10-07T08:09:42.528Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 4,
+  "fields": {
+    "category": 2,
+    "drop": 1,
+    "brand_label": "Premium label",
+    "condition": "New with tags",
+    "name": "Ribbed Knit Top",
+    "slug": "ribbed-knit-top",
+    "sku": "NTS-T001",
+    "description": "Ribbed Knit Top – Cotton knit. Limited piece – once it's gone, it's gone.",
+    "fabric": "Cotton knit",
+    "colors": "",
+    "size_run": "",
+    "mrp": "3600.00",
+    "price": "900.00",
+    "gst_rate": "5.0",
+    "hsn_code": "6109",
+    "stock": 3,
+    "weight_kg": "0.300",
+    "is_active": true,
+    "is_featured": true,
+    "created": "2026-10-07T08:09:42.541Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 5,
+  "fields": {
+    "category": 5,
+    "drop": 1,
+    "brand_label": "Premium label",
+    "condition": "New with tags",
+    "name": "Pleated Trousers",
+    "slug": "pleated-trousers",
+    "sku": "NTS-B001",
+    "description": "Pleated Trousers – Crepe. Limited piece – once it's gone, it's gone.",
+    "fabric": "Crepe",
+    "colors": "",
+    "size_run": "",
+    "mrp": "6000.00",
+    "price": "1500.00",
+    "gst_rate": "12.0",
+    "hsn_code": "6109",
+    "stock": 3,
+    "weight_kg": "0.300",
+    "is_active": true,
+    "is_featured": true,
+    "created": "2026-10-07T08:09:42.553Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 6,
+  "fields": {
+    "category": 4,
+    "drop": 1,
+    "brand_label": "Premium label",
+    "condition": "New with tags",
+    "name": "Tailored Blazer",
+    "slug": "tailored-blazer",
+    "sku": "NTS-O001",
+    "description": "Tailored Blazer – Wool blend. Limited piece – once it's gone, it's gone.",
+    "fabric": "Wool blend",
+    "colors": "",
+    "size_run": "",
+    "mrp": "12800.00",
+    "price": "3200.00",
+    "gst_rate": "12.0",
+    "hsn_code": "6109",
+    "stock": 0,
+    "weight_kg": "0.300",
+    "is_active": true,
+    "is_featured": true,
+    "created": "2026-10-07T08:09:42.565Z"
+  }
+},
+{
+  "model": "orders.shippingrate",
+  "pk": 1,
+  "fields": {
+    "state": "",
+    "base_charge": "150.00",
+    "per_kg_charge": "45.00",
+    "free_above": "25000.00",
+    "eta": "4–7 business days"
+  }
+},
+{
+  "model": "orders.shippingrate",
+  "pk": 2,
+  "fields": {
+    "state": "Uttar Pradesh",
+    "base_charge": "80.00",
+    "per_kg_charge": "25.00",
+    "free_above": "15000.00",
+    "eta": "2–4 business days"
+  }
+}
+]
