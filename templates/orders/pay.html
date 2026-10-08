@@ -1,0 +1,18 @@
+{% extends 'base.html' %}{% block title %}Pay{% endblock %}
+{% block content %}<div class="narrow panel"><h1>Pay for {{ order.number }}</h1>
+<p>Amount due: <b>{{ CUR }}{{ order.total|floatformat:2 }}</b></p>
+<button id="payBtn" class="btn block">Pay securely with Razorpay</button>
+<form id="vf" method="post" action="{% url 'orders:verify' order.number %}">{% csrf_token %}
+ <input type="hidden" name="razorpay_payment_id" id="pid"><input type="hidden" name="razorpay_order_id" id="oid"><input type="hidden" name="razorpay_signature" id="sig"></form>
+<p class="muted">UPI, cards and netbanking supported. <a href="{{ order.get_absolute_url }}">Pay later</a></p></div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var opts = {key: "{{ key_id }}", amount: "{{ order.amount_paise }}", currency: "INR", name: "{{ BRAND_NAME|escapejs }}",
+  description: "Order {{ order.number }}", order_id: "{{ order.razorpay_order_id }}",
+  prefill: {name: "{{ order.ship_name|escapejs }}", email: "{{ order.user.email|escapejs }}", contact: "{{ order.ship_phone|escapejs }}"},
+  theme: {color: "#111111"},
+  handler: function (r) { pid.value = r.razorpay_payment_id; oid.value = r.razorpay_order_id; sig.value = r.razorpay_signature; vf.submit(); }};
+var rzp = new Razorpay(opts);
+payBtn.onclick = function (e) { rzp.open(); e.preventDefault(); };
+payBtn.click();
+</script>{% endblock %}

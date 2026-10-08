@@ -1,0 +1,9 @@
+<a class="card" href="{{ p.get_absolute_url }}">
+  <div class="thumb">{% if p.main_image %}<img src="{{ p.main_image.url }}" alt="{{ p.name }}" loading="lazy">{% else %}<span>nts</span>{% endif %}
+    {% if p.stock == 0 %}<em class="flag sold">sold out</em>{% elif p.discount_percent %}<em class="flag">{{ p.discount_percent }}% off</em>{% endif %}</div>
+  {% if p.brand_label %}<div class="label">{{ p.brand_label }}</div>{% endif %}
+  <h3>{{ p.name }}</h3>
+  {% if p.review_count %}<div class="stars">★ {{ p.avg_rating|floatformat:1 }} <span class="muted">({{ p.review_count }})</span></div>{% endif %}
+  <div class="price">{{ CUR }}{{ p.price|floatformat:0 }}{% if p.mrp %} <s>{{ CUR }}{{ p.mrp|floatformat:0 }}</s>{% endif %}</div>
+  {% if p.low_stock %}<div class="muted">only {{ p.stock }} left</div>{% endif %}
+</a>

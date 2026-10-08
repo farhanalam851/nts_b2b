@@ -1,0 +1,4 @@
+{% extends 'base.html' %}{% block title %}Customers{% endblock %}
+{% block content %}<h1>customers</h1>
+<table class="tbl"><tr><th>Name</th><th>Email</th><th>Phone</th><th>Orders</th><th>Joined</th></tr>
+{% for b in buyers %}<tr><td>{{ b.get_full_name|default:"–" }}</td><td>{{ b.email }}</td><td>{{ b.phone|default:"–" }}</td><td>{{ b.order_count }}</td><td>{{ b.date_joined|date:"d M Y" }}</td></tr>{% endfor %}</table>{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}{% block title %}Checkout{% endblock %}
+{% block content %}<h1>Checkout</h1>
+<form method="post" class="layout cartl">{% csrf_token %}
+ <div>
+  <div class="panel"><h2>1. Delivery address</h2>
+   {% for a in addresses %}<label class="opt"><input type="radio" name="address" value="{{ a.pk }}" {% if a.pk == selected.pk %}checked{% endif %}
+     onchange="location.search='?address='+this.value"> <b>{{ a.label }}</b> – {{ a.name }}, {{ a.line1 }}, {{ a.city }}, {{ a.state }} {{ a.pincode }}</label>{% endfor %}
+   <a href="{% url 'accounts:address_add' %}?next={% url 'orders:checkout' %}">+ Add new address</a></div>
+  <div class="panel"><h2>2. Payment method</h2>
+   {% for radio in form.payment_method %}<label class="opt">{{ radio.tag }} {{ radio.choice_label }}</label>{% endfor %}
+   <p class="muted">Bank transfer orders ship after we confirm your payment.</p>
+   {{ form.notes.label_tag }}{{ form.notes }}</div>
+ </div>
+ <aside class="panel summary"><h3>Summary</h3>
+  {% for r in t.rows %}<div class="row"><span>{{ r.qty }} × {{ r.product.name }}</span><span>{{ CUR }}{{ r.line_total|floatformat:2 }}</span></div>{% endfor %}
+  <hr><div class="row"><span>Subtotal</span><span>{{ CUR }}{{ t.subtotal|floatformat:2 }}</span></div>
+  <div class="row"><span>Delivery</span><span>{{ CUR }}{{ t.shipping|floatformat:2 }}</span></div>
+  <div class="row total"><span>Total</span><span>{{ CUR }}{{ t.total|floatformat:2 }}</span></div>
+  <p class="muted">Total includes GST of {{ CUR }}{{ t.tax_total|floatformat:2 }}.</p>
+  {% if t.eta %}<p class="muted">Estimated delivery: {{ t.eta }}</p>{% endif %}
+  {% if t.free_above %}<p class="muted">Free shipping above {{ CUR }}{{ t.free_above|floatformat:0 }}.</p>{% endif %}
+  <button class="btn block">Place order</button></aside>
+</form>{% endblock %}

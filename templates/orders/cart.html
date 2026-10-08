@@ -1,0 +1,20 @@
+{% extends 'base.html' %}{% block title %}Cart{% endblock %}
+{% block content %}<h1>Your cart</h1>
+{% for p in problems %}<div class="msg error">{{ p }}</div>{% endfor %}
+{% if t.rows %}
+<div class="layout cartl"><form method="post" action="{% url 'orders:cart_update' %}">{% csrf_token %}
+ <table class="tbl"><tr><th>Product</th><th>Price</th><th>Qty</th><th>Amount</th><th></th></tr>
+ {% for r in t.rows %}<tr><td><a href="{{ r.product.get_absolute_url }}">{{ r.product.name }}</a><br><small class="muted">{{ r.product.brand_label }} · {{ r.product.sku }}</small></td>
+  <td>{{ CUR }}{{ r.product.price|floatformat:2 }}</td>
+  <td><input class="qty" type="number" name="qty_{{ r.product.pk }}" value="{{ r.qty }}" min="0"></td>
+  <td>{{ CUR }}{{ r.line_total|floatformat:2 }}</td>
+  <td><button class="linkbtn" formaction="{% url 'orders:cart_remove' r.product.pk %}">Remove</button></td></tr>{% endfor %}</table>
+ <button class="btn outline">Update quantities</button></form>
+ <aside class="panel summary"><h3>Order summary</h3>
+  <div class="row"><span>Subtotal</span><span>{{ CUR }}{{ t.subtotal|floatformat:2 }}</span></div>
+  <div class="row"><span>Delivery</span><span>{{ CUR }}{{ t.shipping|floatformat:2 }}</span></div>
+    <div class="row total"><span>Total</span><span>{{ CUR }}{{ t.total|floatformat:2 }}</span></div>
+  <p class="muted">Prices include GST. Delivery shown for {{ state|default:"the default destination" }}; final delivery charge is calculated at checkout.</p>
+  {% if user.is_authenticated %}<a class="btn block" href="{% url 'orders:checkout' %}">Proceed to checkout</a>
+  {% else %}<a class="btn block" href="{% url 'accounts:login' %}?next={% url 'orders:checkout' %}">Log in to checkout</a>{% endif %}</aside></div>
+{% else %}<p>Your cart is empty. <a href="{% url 'catalog:list' %}">Browse the catalogue</a>.</p>{% endif %}{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}{% block title %}{{ order.number }}{% endblock %}
+{% block content %}<h1>Order {{ order.number }} <span class="tag">{{ order.get_status_display }}</span></h1>
+<div class="grid2"><div class="panel"><h3>Ship to</h3><p>{{ order.ship_name }}, {{ order.ship_phone }}<br>{{ order.ship_line1 }} {{ order.ship_line2 }}<br>{{ order.ship_city }}, {{ order.ship_state }} – {{ order.ship_pincode }}</p>
+ {% if order.tracking_number %}<p><b>Tracking:</b> {{ order.courier }} {{ order.tracking_number }}</p>{% endif %}</div>
+ <div class="panel"><h3>Payment</h3><p>{{ order.get_payment_method_display }} – <b>{{ order.get_payment_status_display }}</b></p>
+ {% if order.payment_status != "paid" and order.status != "cancelled" %}
+  {% if order.payment_method == "razorpay" %}<a class="btn" href="{% url 'orders:pay' order.number %}">Pay now</a>
+  {% else %}<p>Please transfer <b>{{ CUR }}{{ order.total|floatformat:2 }}</b> quoting {{ order.number }}:</p><pre>{{ BANK }}</pre>{% endif %}{% endif %}
+ {% if order.status != "cancelled" %}<a class="btn outline" href="{% url 'orders:invoice' order.number %}?download=1">Download invoice (PDF)</a> <a href="{% url 'orders:invoice' order.number %}" target="_blank">view</a>{% endif %}</div></div>
+<table class="tbl"><tr><th>Item</th><th>HSN</th><th>Qty</th><th>Price</th><th>GST</th><th>Amount</th></tr>
+{% for i in order.items.all %}<tr><td>{{ i.name }}<br><small class="muted">{{ i.sku }}</small></td><td>{{ i.hsn_code }}</td><td>{{ i.quantity }}</td><td>{{ CUR }}{{ i.unit_price|floatformat:2 }}</td><td>{{ i.gst_rate|floatformat:"-1" }}%</td><td>{{ CUR }}{{ i.line_total|floatformat:2 }}</td></tr>{% endfor %}
+<tr><td colspan="5" class="r">Items</td><td>{{ CUR }}{{ order.subtotal|floatformat:2 }}</td></tr>
+<tr><td colspan="5" class="r">Delivery</td><td>{{ CUR }}{{ order.shipping|floatformat:2 }}</td></tr>
+<tr><td colspan="5" class="r muted">Includes GST</td><td class="muted">{{ CUR }}{{ order.tax_total|floatformat:2 }}</td></tr>
+<tr class="total"><td colspan="5" class="r"><b>Total</b></td><td><b>{{ CUR }}{{ order.total|floatformat:2 }}</b></td></tr></table>
+<h3>Review your purchases</h3><p>{% for i in order.items.all %}{% if i.product %}<a href="{{ i.product.get_absolute_url }}#reviews">{{ i.name }}</a> · {% endif %}{% endfor %}</p>
+{% endblock %}

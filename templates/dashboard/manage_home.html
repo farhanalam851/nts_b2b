@@ -1,0 +1,9 @@
+{% extends 'base.html' %}{% block title %}Admin panel{% endblock %}
+{% block content %}<h1>Admin panel</h1>
+<p><a class="btn small" href="{% url 'dashboard:manage_orders' %}">Orders</a> <a class="btn small" href="{% url 'dashboard:manage_customers' %}">Customers</a> <a class="btn small outline" href="/admin/catalog/product/">Products</a> <a class="btn small outline" href="/admin/catalog/category/">Categories</a> <a class="btn small outline" href="/admin/orders/shippingrate/">Shipping rates</a> <a class="btn small outline" href="/admin/catalog/review/">Reviews</a></p>
+<div class="stats"><div class="stat"><b>{{ CUR }}{{ revenue_30|floatformat:0 }}</b>Paid revenue (30 days)</div><div class="stat"><b>{{ CUR }}{{ revenue_all|floatformat:0 }}</b>Paid revenue (all)</div>
+<div class="stat"><b>{{ orders_pending }}</b>Orders to fulfil</div><div class="stat"><b>{{ unpaid_bank }}</b>Bank transfers to verify</div><div class="stat"><b>{{ customers_n }}</b>Customers</div></div>
+<div class="grid2"><div><h2>Daily sales</h2><table class="tbl"><tr><th>Date</th><th>Orders</th><th>Revenue</th></tr>{% for d in daily %}<tr><td>{{ d.d }}</td><td>{{ d.n }}</td><td>{{ CUR }}{{ d.total|floatformat:2 }}</td></tr>{% empty %}<tr><td colspan="3">No paid orders yet.</td></tr>{% endfor %}</table>
+<h2>Top sellers</h2><table class="tbl">{% for p in top %}<tr><td>{{ p.name }}</td><td>{{ p.units }} pcs</td></tr>{% empty %}<tr><td>No data</td></tr>{% endfor %}</table></div>
+<div><h2>Recent orders</h2><table class="tbl">{% for o in recent %}<tr><td><a href="{% url 'dashboard:manage_order' o.number %}">{{ o.number }}</a></td><td>{{ o.user }}</td><td>{{ CUR }}{{ o.total|floatformat:0 }}</td><td>{{ o.get_status_display }}</td></tr>{% endfor %}</table>
+<h2>Low stock</h2><table class="tbl">{% for p in low_stock %}<tr><td>{{ p.name }}</td><td class="warn">{{ p.stock }} left</td></tr>{% empty %}<tr><td>All good</td></tr>{% endfor %}</table></div></div>{% endblock %}

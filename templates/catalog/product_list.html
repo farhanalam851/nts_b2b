@@ -1,0 +1,21 @@
+{% extends 'base.html' %}{% block title %}{% if category %}{{ category.name }}{% else %}Catalogue{% endif %}{% endblock %}
+{% block content %}
+<h1>{% if category %}{{ category.name }}{% else %}Shop{% endif %}{% if drop %} – {{ drop.name }}{% endif %}{% if q %} <small>– “{{ q }}”</small>{% endif %}</h1>
+<div class="layout">
+ <aside class="panel"><h3>Categories</h3><ul class="plain">
+  <li><a href="{% url 'catalog:list' %}">All products</a></li>
+  {% for c in categories %}<li><a href="{{ c.get_absolute_url }}" {% if category.pk == c.pk %}class="on"{% endif %}>{{ c.name }}</a>
+   {% if c.children.all %}<ul class="plain sub">{% for s in c.children.all %}<li><a href="{{ s.get_absolute_url }}">{{ s.name }}</a></li>{% endfor %}</ul>{% endif %}</li>{% endfor %}</ul>
+  {% if drops %}<h3>Drops</h3><ul class="plain">{% for d in drops %}<li><a href="?drop={{ d.slug }}" {% if drop.pk == d.pk %}class="on"{% endif %}>{{ d.name }}</a></li>{% endfor %}</ul>{% endif %}
+  <form method="get"><h3>Filter</h3>{% if drop %}<input type="hidden" name="drop" value="{{ drop.slug }}">{% endif %}{% if q %}<input type="hidden" name="q" value="{{ q }}">{% endif %}
+   <label>Price from</label><input type="number" name="min" value="{{ request.GET.min }}"><label>to</label><input type="number" name="max" value="{{ request.GET.max }}">
+   <label>Sort</label><select name="sort">
+    <option value="new" {% if sort == 'new' %}selected{% endif %}>Newest</option><option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>Price: low to high</option>
+    <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>Price: high to low</option><option value="rating" {% if sort == 'rating' %}selected{% endif %}>Top rated</option></select>
+   <button class="btn small">Apply</button></form></aside>
+ <section><p class="muted">{{ page.paginator.count }} piece{{ page.paginator.count|pluralize }}</p><div class="grid">{% for p in page %}{% include 'partials/product_card.html' %}{% empty %}<p class="panel">Nothing matches that yet. Try another category or <a href="{% url 'catalog:list' %}">see everything</a>.</p>{% endfor %}</div>
+  {% if page.paginator.num_pages > 1 %}<div class="pager">
+   {% if page.has_previous %}<a href="?{{ qs_params }}&page={{ page.previous_page_number }}">← Prev</a>{% endif %}
+   <span>Page {{ page.number }} / {{ page.paginator.num_pages }}</span>
+   {% if page.has_next %}<a href="?{{ qs_params }}&page={{ page.next_page_number }}">Next →</a>{% endif %}</div>{% endif %}</section>
+</div>{% endblock %}

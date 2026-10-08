@@ -1,0 +1,3 @@
+{% extends 'base.html' %}{% block title %}Contact{% endblock %}
+{% block content %}<div class="narrow"><h1>Contact us</h1><p>{{ SUPPORT_EMAIL }} · {{ SUPPORT_PHONE }}</p>
+<form method="post" class="panel">{% csrf_token %}{% include 'partials/form.html' %}<button class="btn block">Send</button></form></div>{% endblock %}

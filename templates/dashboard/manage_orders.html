@@ -1,0 +1,8 @@
+{% extends 'base.html' %}{% block title %}Orders{% endblock %}
+{% block content %}<h1>Orders</h1>
+<form class="filters"><input name="q" placeholder="Order / company / email" value="{{ q }}">
+<select name="status"><option value="">Any status</option>{% for k,v in statuses %}<option value="{{ k }}" {% if k == status %}selected{% endif %}>{{ v }}</option>{% endfor %}</select>
+<select name="payment"><option value="">Any payment</option>{% for k,v in pays %}<option value="{{ k }}" {% if k == pay %}selected{% endif %}>{{ v }}</option>{% endfor %}</select><button class="btn small">Filter</button></form>
+<table class="tbl"><tr><th>Order</th><th>Buyer</th><th>State</th><th>Total</th><th>Payment</th><th>Status</th><th>Date</th></tr>
+{% for o in page %}<tr><td><a href="{% url 'dashboard:manage_order' o.number %}">{{ o.number }}</a></td><td>{{ o.user }}</td><td>{{ o.ship_state }}</td><td>{{ CUR }}{{ o.total|floatformat:2 }}</td><td>{{ o.get_payment_method_display }}<br>{{ o.get_payment_status_display }}</td><td>{{ o.get_status_display }}</td><td>{{ o.created|date:"d M Y" }}</td></tr>{% endfor %}</table>
+<div class="pager">{% if page.has_previous %}<a href="?page={{ page.previous_page_number }}&q={{ q }}&status={{ status }}&payment={{ pay }}">← Prev</a>{% endif %} Page {{ page.number }}/{{ page.paginator.num_pages }} {% if page.has_next %}<a href="?page={{ page.next_page_number }}&q={{ q }}&status={{ status }}&payment={{ pay }}">Next →</a>{% endif %}</div>{% endblock %}

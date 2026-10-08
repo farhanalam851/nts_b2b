@@ -1,0 +1,10 @@
+{% extends 'base.html' %}{% block title %}{{ order.number }}{% endblock %}
+{% block content %}<h1>{{ order.number }} – {{ order.user }}</h1>
+<div class="grid2"><div class="panel"><p>{{ order.ship_name }}, {{ order.ship_phone }}<br>{{ order.ship_line1 }} {{ order.ship_line2 }}, {{ order.ship_city }}, {{ order.ship_state }} {{ order.ship_pincode }}<br>{{ order.user.email }}</p>
+<p>{{ order.get_payment_method_display }} – <b>{{ order.get_payment_status_display }}</b> {{ order.razorpay_payment_id }}</p><p>Notes: {{ order.notes|default:"–" }}</p>
+<table class="tbl">{% for i in order.items.all %}<tr><td>{{ i.name }} ({{ i.sku }})</td><td>{{ i.quantity }}</td><td>{{ CUR }}{{ i.line_total|floatformat:2 }}</td></tr>{% endfor %}
+<tr><td>Shipping</td><td></td><td>{{ CUR }}{{ order.shipping|floatformat:2 }}</td></tr><tr><td>GST</td><td></td><td>{{ CUR }}{{ order.tax_total|floatformat:2 }}</td></tr><tr class="total"><td>Total</td><td></td><td>{{ CUR }}{{ order.total|floatformat:2 }}</td></tr></table></div>
+<form method="post" class="panel">{% csrf_token %}<a class="btn small outline" href="{% url 'orders:invoice' order.number %}?download=1">Download invoice</a><h3>Fulfilment</h3><label>Status</label><select name="status">{% for k,v in statuses %}<option value="{{ k }}" {% if k == order.status %}selected{% endif %}>{{ v }}</option>{% endfor %}</select>
+<label>Courier</label><input name="courier" value="{{ order.courier }}"><label>Tracking number</label><input name="tracking_number" value="{{ order.tracking_number }}"><button class="btn block">Save</button>
+<hr>{% if order.payment_status != "paid" %}<button name="action" value="mark_paid" class="btn outline block">Mark as paid (bank transfer received)</button>{% endif %}
+{% if order.status != "cancelled" %}<button name="action" value="cancel" class="btn danger block" onclick="return confirm('Cancel and restock?')">Cancel order</button>{% endif %}</form></div>{% endblock %}

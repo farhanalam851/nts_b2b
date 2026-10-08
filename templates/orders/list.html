@@ -1,0 +1,6 @@
+{% extends 'base.html' %}{% block title %}My orders{% endblock %}
+{% block content %}<h1>My orders</h1>
+<table class="tbl"><tr><th>Order</th><th>Date</th><th>Total</th><th>Payment</th><th>Status</th></tr>
+{% for o in orders %}<tr><td><a href="{{ o.get_absolute_url }}">{{ o.number }}</a></td><td>{{ o.created|date:"d M Y" }}</td><td>{{ CUR }}{{ o.total|floatformat:2 }}</td>
+<td>{{ o.get_payment_status_display }}</td><td><span class="tag">{{ o.get_status_display }}</span></td></tr>
+{% empty %}<tr><td colspan="5">No orders yet.</td></tr>{% endfor %}</table>{% endblock %}

@@ -1,0 +1,45 @@
+{% load static %}<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ BRAND_NAME }}{% endblock %} | {{ BRAND_NAME }}</title>
+<link rel="icon" href="{% static 'img/logo.jpg' %}">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head><body>
+<div class="topbar">premium labels · limited pieces · 50–90% off retail</div>
+<header class="site-header"><div class="wrap nav">
+  <a class="logo" href="{% url 'catalog:home' %}"><img src="{% static 'img/logo.jpg' %}" alt="{{ BRAND_NAME }}"></a>
+  <form class="search" action="{% url 'catalog:list' %}"><input name="q" placeholder="Search styles or SKU" value="{{ q|default:'' }}"></form>
+  <nav>
+    <a href="{% url 'catalog:list' %}">shop</a>
+    <a href="{% url 'catalog:page' 'how-drops-work' %}">how drops work</a>
+    <a href="{% url 'catalog:about' %}">about</a>
+    <a href="{% url 'catalog:contact' %}">Contact</a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'dashboard:home' %}">my account</a>
+      {% if user.is_staff %}<a href="{% url 'dashboard:manage_home' %}">Admin panel</a>{% endif %}
+      <form method="post" action="{% url 'accounts:logout' %}" class="inline">{% csrf_token %}<button class="linkbtn">Logout</button></form>
+    {% else %}
+      <a href="{% url 'accounts:login' %}">Login</a>
+      <a class="btn small" href="{% url 'accounts:register' %}">Sign up</a>
+    {% endif %}
+    <a href="{% url 'orders:cart' %}" class="cart">Cart <span class="badge">{{ cart_count }}</span></a>
+  </nav>
+</div></header>
+{% if messages %}<div class="wrap">{% for m in messages %}<div class="msg {{ m.tags }}">{{ m }}</div>{% endfor %}</div>{% endif %}
+<main class="wrap">{% block content %}{% endblock %}</main>
+<footer><div class="wrap foot">
+  <div><b>{{ BRAND_NAME }}</b><p>Curated pieces from brands you love.<br>UAE | Licensed</p><p><a href="{{ BRAND_INSTAGRAM }}" target="_blank" rel="noopener">Instagram</a></p></div>
+  <div><b>Help</b><p><a href="{% url 'catalog:page' 'how-drops-work' %}">How our drops work</a></p><p><a href="{% url 'catalog:page' 'shipping-returns' %}">Shipping &amp; returns</a></p>
+  <p><a href="{% url 'catalog:page' 'terms' %}">Terms of sale</a></p><p><a href="{% url 'catalog:page' 'privacy' %}">Privacy</a></p></div>
+  <div><b>Contact</b><p>{{ SUPPORT_EMAIL }}</p><p>{{ SUPPORT_PHONE }}</p></div>
+</div><div class="devbar"><div class="wrap devrow">
+  <span>Website designed &amp; developed by <b>{{ DEV_NAME }}</b> · {{ DEV_TITLE }}</span>
+  <span class="devlinks">
+    <a href="{{ DEV_INSTAGRAM }}" target="_blank" rel="noopener">Instagram {{ DEV_HANDLE }}</a>
+    <a href="mailto:{{ DEV_EMAIL }}?subject=Website%20enquiry">{{ DEV_EMAIL }}</a>
+    <a class="devcta" href="{{ DEV_INSTAGRAM }}" target="_blank" rel="noopener">Need a website? DM me</a>
+  </span></div></div>
+<div class="copy">© {% now 'Y' %} {{ BRAND_NAME }}. All rights reserved.</div></footer>
+</body></html>

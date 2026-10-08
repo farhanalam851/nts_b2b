@@ -1,0 +1,10 @@
+{% autoescape off %}Thank you for your order {{ order.number }}.
+
+Total: {{ CUR }}{{ order.total }}  |  Payment: {{ order.get_payment_method_display }} ({{ order.get_payment_status_display }})
+{% for i in order.items.all %}- {{ i.quantity }} x {{ i.name }}
+{% endfor %}{% if order.payment_method == "bank" and order.payment_status != "paid" %}
+Please transfer the amount to:
+{{ BANK }}
+Quote {{ order.number }} as the reference.
+{% endif %}
+— {{ BRAND_NAME }}{% endautoescape %}

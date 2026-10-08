@@ -1,0 +1,17 @@
+{% extends 'base.html' %}{% load static %}
+{% block content %}
+<section class="hero"><div>
+<p class="eyebrow">premium labels · limited pieces</p>
+<h1>curated pieces from <em>brands you love.</em></h1>
+<p>50–90% off retail. Authentic premium pieces, released in limited drops.</p>
+<a class="btn" href="{% url 'catalog:list' %}">shop the drop</a>
+{% if not user.is_authenticated %}<a class="btn outline" href="{% url 'accounts:register' %}">create an account</a>{% endif %}</div>
+<img class="herologo" src="{% static 'img/logo.jpg' %}" alt="">
+</section>
+<section class="steps"><div><b>01</b> browse the drop</div><div><b>02</b> add your pieces</div><div><b>03</b> pay securely online</div><div><b>04</b> delivered to your door</div></section>
+{% if drops %}<h2>drops</h2><div class="grid cats">{% for d in drops %}<a class="catcard" href="{% url 'catalog:list' %}?drop={{ d.slug }}"><span>{{ d.name }}</span></a>{% endfor %}</div>{% endif %}
+{% if categories %}<h2>shop by category</h2><div class="grid cats">
+{% for c in categories %}<a class="catcard" href="{{ c.get_absolute_url }}">{% if c.image %}<img src="{{ c.image.url }}" alt="{{ c.name }}">{% endif %}<span>{{ c.name }}</span></a>{% endfor %}</div>{% endif %}
+{% if featured %}<h2>featured</h2><div class="grid">{% for p in featured %}{% include 'partials/product_card.html' %}{% endfor %}</div>{% endif %}
+<h2>latest arrivals</h2><div class="grid">{% for p in latest %}{% include 'partials/product_card.html' %}{% empty %}<p class="muted">the next drop is coming soon.</p>{% endfor %}</div>
+{% endblock %}

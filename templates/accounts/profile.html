@@ -1,0 +1,13 @@
+{% extends 'base.html' %}{% block title %}Profile{% endblock %}
+{% block content %}<h1>My profile</h1>
+<div class="grid2">
+ <form method="post" class="panel">{% csrf_token %}<h2>Your details</h2>{% include 'partials/form.html' %}
+   <p class="muted">Email: {{ user.email }}</p>
+   <button class="btn">Save</button> <a href="{% url 'accounts:password_change' %}">Change password</a></form>
+ <div class="panel"><h2>Delivery addresses</h2>
+  {% for a in addresses %}<div class="addr"><b>{{ a.label }}</b>{% if a.is_default %} <span class="tag">Default</span>{% endif %}<br>{{ a.name }}, {{ a.phone }}<br>{{ a.line1 }} {{ a.line2 }}<br>{{ a.city }}, {{ a.state }} – {{ a.pincode }}<br>
+   <a href="{% url 'accounts:address_edit' a.pk %}">Edit</a> ·
+   <form class="inline" method="post" action="{% url 'accounts:address_delete' a.pk %}">{% csrf_token %}<button class="linkbtn">Delete</button></form></div>
+  {% empty %}<p class="muted">No addresses yet.</p>{% endfor %}
+  <a class="btn outline" href="{% url 'accounts:address_add' %}">+ Add address</a></div>
+</div>{% endblock %}

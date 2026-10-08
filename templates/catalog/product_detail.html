@@ -1,0 +1,48 @@
+{% extends 'base.html' %}{% block title %}{{ product.name }}{% endblock %}
+{% block content %}
+<p class="crumbs"><a href="{% url 'catalog:list' %}">Catalogue</a> › <a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a> › {{ product.name }}</p>
+<div class="grid2 pd">
+ <div class="gallery">
+  <div class="big">{% if product.main_image %}<img id="bigimg" src="{{ product.main_image.url }}" alt="{{ product.name }}">{% else %}<span class="ph">{{ BRAND_NAME|slice:":1" }}</span>{% endif %}</div>
+  <div class="thumbs">{% for im in product.images.all %}<img src="{{ im.image.url }}" alt="{{ im.alt }}" onclick="document.getElementById('bigimg').src=this.src">{% endfor %}</div>
+ </div>
+ <div>
+  {% if product.brand_label %}<div class="label">{{ product.brand_label }}</div>{% endif %}
+  <h1>{{ product.name }}</h1>
+  <div class="stars">{% if stats.n %}★ {{ stats.avg|floatformat:1 }} · <a href="#reviews">{{ stats.n }} review{{ stats.n|pluralize }}</a>{% else %}<a href="#reviews">Be the first to review</a>{% endif %}</div>
+  <p class="muted">SKU {{ product.sku }} · HSN {{ product.hsn_code }}</p>
+   <div class="price big">{{ CUR }}{{ product.price|floatformat:2 }} <small>incl. GST</small></div>
+   {% if product.mrp %}<div class="muted">Retail <s>{{ CUR }}{{ product.mrp|floatformat:2 }}</s> · <b>{{ product.discount_percent }}% off</b></div>{% endif %}
+   {% if product.in_stock %}
+   <form method="post" action="{% url 'orders:cart_add' %}" class="buy">{% csrf_token %}<input type="hidden" name="product_id" value="{{ product.pk }}">
+     <label>Quantity</label><input type="number" name="qty" min="1" max="{{ product.stock }}" value="1">
+     <button class="btn">Add to cart</button></form>
+   <p class="muted">{% if product.low_stock %}only {{ product.stock }} left – limited piece{% else %}{{ product.stock }} available{% endif %}</p>
+   {% else %}<p class="warn"><b>Sold out</b></p>{% endif %}
+  <dl class="specs">{% if product.fabric %}<dt>Fabric</dt><dd>{{ product.fabric }}</dd>{% endif %}
+   {% if product.color_list %}<dt>Colours</dt><dd>{{ product.colors }}</dd>{% endif %}
+   {% if product.size_run %}<dt>Sizes</dt><dd>{{ product.size_run }}</dd>{% endif %}
+   {% if product.condition %}<dt>Condition</dt><dd>{{ product.condition }}</dd>{% endif %}{% if product.drop %}<dt>Drop</dt><dd><a href="{% url 'catalog:list' %}?drop={{ product.drop.slug }}">{{ product.drop.name }}</a></dd>{% endif %}</dl>
+  <p>{{ product.description|linebreaksbr }}</p>
+ </div>
+</div>
+
+<section id="reviews"><h2>Ratings &amp; reviews</h2>
+<div class="grid2">
+ <div class="panel">
+  {% if stats.n %}<div class="avg">{{ stats.avg|floatformat:1 }} <small>/ 5</small></div>
+   {% for star, n in breakdown.items %}<div class="bar"><span>{{ star }}★</span><i style="width:{% widthratio n stats.n 100 %}%"></i><span>{{ n }}</span></div>{% endfor %}
+  {% else %}<p class="muted">No reviews yet.</p>{% endif %}
+  {% if user.is_authenticated %}
+  <h3>{% if my_review %}Edit your review{% else %}Write a review{% endif %}</h3>
+  <form method="post" action="{% url 'catalog:review' product.slug %}" enctype="multipart/form-data">{% csrf_token %}{% include 'partials/form.html' %}<button class="btn">Submit review</button></form>
+  {% else %}<p><a href="{% url 'accounts:login' %}?next={{ request.path }}">Log in</a> to write a review.</p>{% endif %}
+ </div>
+ <div>{% for r in reviews %}<article class="review"><div class="stars">{% for i in "12345" %}{% if forloop.counter <= r.rating %}★{% else %}☆{% endif %}{% endfor %}
+  <b>{{ r.title }}</b></div><p>{{ r.body|linebreaksbr }}</p>
+  {% if r.image %}<a href="{{ r.image.url }}" target="_blank"><img class="rimg" src="{{ r.image.url }}" alt="Review photo"></a>{% endif %}
+  <div class="muted">{{ r.user.first_name|default:"Customer" }} · {{ r.created|date:"d M Y" }}{% if r.verified %} · <span class="ok">Verified purchase</span>{% endif %}</div></article>{% endfor %}</div>
+</div></section>
+
+{% if related %}<h2>You may also like</h2><div class="grid">{% for p in related %}{% include 'partials/product_card.html' %}{% endfor %}</div>{% endif %}
+{% endblock %}

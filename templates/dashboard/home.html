@@ -1,0 +1,9 @@
+{% extends 'base.html' %}{% block title %}Dashboard{% endblock %}
+{% block content %}<h1>Welcome, {{ user.first_name|default:user.email }}</h1>
+<div class="stats"><div class="stat"><b>{{ order_count }}</b>Total orders</div><div class="stat"><b>{{ open_count }}</b>Open orders</div>
+<div class="stat"><b>{{ CUR }}{{ spent|floatformat:0 }}</b>Paid to date</div><div class="stat"><b>{{ unpaid }}</b>Awaiting payment</div></div>
+<div class="grid2"><div><h2>Recent orders</h2><table class="tbl"><tr><th>Order</th><th>Total</th><th>Status</th></tr>
+{% for o in recent %}<tr><td><a href="{{ o.get_absolute_url }}">{{ o.number }}</a></td><td>{{ CUR }}{{ o.total|floatformat:2 }}</td><td>{{ o.get_status_display }} / {{ o.get_payment_status_display }}</td></tr>{% empty %}<tr><td colspan="3">No orders yet.</td></tr>{% endfor %}</table>
+<a href="{% url 'orders:list' %}">All orders →</a></div>
+<div class="panel"><h2>Account</h2><p>{{ user.get_full_name }}<br>{{ user.email }}<br>{{ user.phone }}</p>
+<a class="btn outline" href="{% url 'accounts:profile' %}">Profile &amp; addresses</a> <a class="btn" href="{% url 'catalog:list' %}">Shop now</a></div></div>{% endblock %}
