@@ -16,7 +16,7 @@ def env(key, default=""):
 
 SECRET_KEY = env("DJANGO_SECRET_KEY", "dev-insecure-change-me")
 DEBUG = env("DJANGO_DEBUG", "1") == "1"
-ALLOWED_HOSTS = [h.strip() for h in env("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,nts-b2b.vercel.app").split(",") if h.strip()]
+ALLOWED_HOSTS = 'nts-b2b.vercel.app'
 CSRF_TRUSTED_ORIGINS = [o.strip() for o in env("CSRF_TRUSTED_ORIGINS", "").split(",") if o.strip()]
 
 # Render sets this automatically (e.g. my-shop.onrender.com)
